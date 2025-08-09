@@ -1,0 +1,5 @@
+
+Python, TypeScript, GLSL, JavaScript, Bash, C, C++, Rust, 
+FastAPI, LangChain, FAISS, Docker, Supabase, HuggingFace Transformers,LLMs, Prompt Engineering, RAG, Embedding Systems, 
+VS Code, Poetry, GitHub, Railway, Vite, Next.js, React, TailwindCSS, Framer Motion, ShadCN, Vercel,  
+IBM SPSS, Excel (advanced), PowerPoint, Python (data analysis), SQL, CATIA, SolidWorks, ANSYS, AutoCAD, Maya, Openfoam, Photoshop, Illustrator, Siemens NX,
