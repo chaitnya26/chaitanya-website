@@ -1,90 +1,114 @@
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
-// Professional project data structure
-const projects = [
+// -------- Types ---------
+interface ProjectLinks {
+  demo: string;
+  case_study: string;
+}
+
+interface Project {
+  id: string;
+  category: string;
+  title: string;
+  location: string;
+  period: string;
+  description: string;
+  impact: string;
+  tech: string[];
+  status: "In Production" | "Completed" | string;
+  links: ProjectLinks;
+}
+
+// -------- Data ---------
+const projects: Project[] = [
   {
-    id: 'rag-ai',
+    id: "rag-ai",
     category: "AI & Machine Learning",
     title: "RAG-Driven Psychiatric AI Assistant",
     location: "Mumbai, India",
     period: "06/2025 – present",
-    description: "Architected a privacy-first GenAI system integrating WHO ICD-11 standards with ChromaDB for semantic retrieval. Processed 16,000+ medical entities achieving 94% accuracy in diagnostic suggestions.",
+    description:
+      "Architected a privacy-first GenAI system integrating WHO ICD-11 standards with ChromaDB for semantic retrieval. Processed 16,000+ medical entities achieving 94% accuracy in diagnostic suggestions.",
     impact: "Reduced diagnostic time by 40% • Improved accuracy by 25%",
     tech: ["Python", "ChromaDB", "FastAPI", "Gradio", "Docker"],
     status: "In Production",
     links: {
       demo: "https://github.com/chaitnya26/icd-rag-agent",
-      case_study: "mailto:changxao@protonmail.com"
-    }
+      case_study: "mailto:changxao@protonmail.com",
+    },
   },
   {
-    id: 'ev-research',
+    id: "ev-research",
     category: "Market Research",
     title: "India EV Market Analysis & Strategy",
-    location: "Mumbai, India", 
+    location: "Mumbai, India",
     period: "04/2025 – 05/2025",
-    description: "Comprehensive analysis of India's electric vehicle adoption trends and supply chain dynamics. Delivered strategic recommendations for Industry 4.0 implementation.",
+    description:
+      "Comprehensive analysis of India's electric vehicle adoption trends and supply chain dynamics. Delivered strategic recommendations for Industry 4.0 implementation.",
     impact: "Identified 3 key market opportunities • Projected 18% cost reduction",
     tech: ["Python", "Tableau", "Advanced Analytics"],
     status: "Completed",
     links: {
       demo: "https://github.com/chaitnya26",
-      case_study: "mailto:changxao@protonmail.com"
-    }
+      case_study: "mailto:changxao@protonmail.com",
+    },
   },
   {
-    id: 'hvac-optimization',
+    id: "hvac-optimization",
     category: "Engineering Design",
     title: "HVAC System Optimization",
     location: "Mumbai, India",
-    period: "12/2024 – 04/2025", 
-    description: "Benchmarked 16.6–200 TR HVAC systems against ASHRAE standards. Developed IRR models and optimization algorithms for energy efficiency improvements.",
+    period: "12/2024 – 04/2025",
+    description:
+      "Benchmarked 16.6–200 TR HVAC systems against ASHRAE standards. Developed IRR models and optimization algorithms for energy efficiency improvements.",
     impact: "18% energy cost reduction • $2.3M projected savings",
     tech: ["ANSYS", "Python", "Advanced Modeling"],
     status: "Completed",
     links: {
       demo: "https://github.com/chaitnya26",
-      case_study: "mailto:changxao@protonmail.com"
-    }
+      case_study: "mailto:changxao@protonmail.com",
+    },
   },
   {
-    id: 'aircraft-cfd',
+    id: "aircraft-cfd",
     category: "Aerospace Engineering",
     title: "Blended Wing Body Aircraft Analysis",
     location: "Mumbai, India",
     period: "07/2024 – 11/2024",
-    description: "CFD analysis comparing blended wing body vs conventional aircraft designs using SST k-ω turbulence modeling. Comprehensive feasibility assessment.",
+    description:
+      "CFD analysis comparing blended wing body vs conventional aircraft designs using SST k-ω turbulence modeling. Comprehensive feasibility assessment.",
     impact: "12% drag reduction identified • Grade: 93/100 (A+)",
     tech: ["MATLAB", "ANSYS Fluent", "SolidWorks"],
     status: "Completed",
     links: {
-      demo: "https://github.com/chaitnya26/Innovative-Design-of-a-Business-Jet", 
-      case_study: "mailto:changxao@protonmail.com"
-    }
+      demo: "https://github.com/chaitnya26/Innovative-Design-of-a-Business-Jet",
+      case_study: "mailto:changxao@protonmail.com",
+    },
   },
   {
-    id: 'uav-development',
+    id: "uav-development",
     category: "Aerospace Engineering",
     title: "UAV Design & Optimization",
     location: "Mumbai, India",
     period: "12/2023 – 05/2024",
-    description: "Led 10-member team in UAV development using CFD and XFOIL optimization. Achieved significant performance improvements through aerodynamic redesign.",
+    description:
+      "Led 10-member team in UAV development using CFD and XFOIL optimization. Achieved significant performance improvements through aerodynamic redesign.",
     impact: "11% weight reduction • 10% drag reduction • Team of 10",
     tech: ["MATLAB", "C++", "AutoCAD", "XFOIL"],
     status: "Completed",
     links: {
       demo: "https://github.com/chaitnya26",
-      case_study: "mailto:changxao@protonmail.com"
-    }
-  }
+      case_study: "mailto:changxao@protonmail.com",
+    },
+  },
 ];
 
-// Professional hero section
-const ProjectsHero = () => {
+// -------- Hero Section ---------
+const ProjectsHero: React.FC = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { threshold: 0.3 });
-  
+  const inView = useInView(ref, { amount: 0.3 }); // ✅ replaced threshold with amount
+
   return (
     <section className="w-full py-16 md:py-24 bg-white">
       <motion.div
@@ -98,29 +122,39 @@ const ProjectsHero = () => {
           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
           Engineering Portfolio
         </div>
-        
+
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
           Project Portfolio
         </h1>
-        
+
         <p className="text-md sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-          A curated selection of engineering projects spanning AI/ML, aerospace, 
-          and sustainable systems. Each project demonstrates technical excellence 
-          and measurable business impact.
+          A curated selection of engineering projects spanning AI/ML, aerospace,
+          and sustainable systems. Each project demonstrates technical
+          excellence and measurable business impact.
         </p>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
           <div>
-            <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">4+</div>
+            <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
+              4+
+            </div>
             <div className="text-gray-600 text-sm sm:text-base">Projects</div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">40%</div>
-            <div className="text-gray-600 text-sm sm:text-base">Avg. Efficiency Gain</div>
+            <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
+              40%
+            </div>
+            <div className="text-gray-600 text-sm sm:text-base">
+              Avg. Efficiency Gain
+            </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">$100K+</div>
-            <div className="text-gray-600 text-sm sm:text-base">Total Value Created</div>
+            <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
+              $100K+
+            </div>
+            <div className="text-gray-600 text-sm sm:text-base">
+              Total Value Created
+            </div>
           </div>
         </div>
       </motion.div>
@@ -128,20 +162,27 @@ const ProjectsHero = () => {
   );
 };
 
+// -------- Project Card ---------
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+}
 
-// Professional project card
-const ProjectCard = ({ project, index }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { margin: '-50px' });
-  
-  const getStatusColor = (status) => {
+  const inView = useInView(ref, { margin: "-50px" });
+
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'In Production': return 'bg-green-100 text-green-800';
-      case 'Completed': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "In Production":
+        return "bg-green-100 text-green-800";
+      case "Completed":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
-  
+
   return (
     <motion.article
       ref={ref}
@@ -164,33 +205,35 @@ const ProjectCard = ({ project, index }) => {
             {project.location} • {project.period}
           </div>
         </div>
-        <span className={`px-2.5 py-0.5 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor(project.status)}`}>
+        <span
+          className={`px-2.5 py-0.5 text-xs font-semibold rounded-full whitespace-nowrap ${getStatusColor(
+            project.status
+          )}`}
+        >
           {project.status}
         </span>
       </div>
-      
+
       {/* Description */}
       <p className="text-gray-700 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
         {project.description}
       </p>
-      
+
       {/* Impact Metrics */}
       <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-6 sm:mb-8">
         <div className="text-xs sm:text-sm font-semibold text-blue-900 mb-1">
           Key Impact
         </div>
-        <div className="text-blue-800 text-sm sm:text-base">
-          {project.impact}
-        </div>
+        <div className="text-blue-800 text-sm sm:text-base">{project.impact}</div>
       </div>
-      
+
       {/* Technologies */}
       <div className="mb-6 sm:mb-8">
         <div className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">
           Technologies Used
         </div>
         <div className="flex flex-wrap gap-1 sm:gap-2">
-          {project.tech.map((tech, i) => (
+          {project.tech.map((tech: string, i: number) => (
             <span
               key={i}
               className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-lg font-medium whitespace-nowrap"
@@ -200,7 +243,7 @@ const ProjectCard = ({ project, index }) => {
           ))}
         </div>
       </div>
-      
+
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-3">
         <a
@@ -222,13 +265,12 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
-
-// Main component
+// -------- Main Page ---------
 export default function Projects() {
   return (
-    <div className=" min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <ProjectsHero />
-      
+
       <section id="projects" className="py-16 px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -237,20 +279,20 @@ export default function Projects() {
               Featured Projects
             </h2>
             <p className="text-md sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Each project represents a unique engineering challenge solved through 
-              innovative thinking and rigorous technical execution.
+              Each project represents a unique engineering challenge solved
+              through innovative thinking and rigorous technical execution.
             </p>
           </div>
-          
+
           {/* Projects Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {projects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}
           </div>
-          
+
           {/* Call to Action */}
-          <motion.div 
+          <motion.div
             className="text-center mt-16 sm:mt-20 p-8 sm:p-12 bg-white border border-gray-200 rounded-2xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -260,7 +302,7 @@ export default function Projects() {
               Interested in My Work?
             </h3>
             <p className="text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-              I'm always open to discussing new opportunities, collaborations, 
+              I'm always open to discussing new opportunities, collaborations,
               or answering questions about my engineering projects.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">

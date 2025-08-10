@@ -1,5 +1,5 @@
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView, useMotionValue, useSpring, Variants, AnimationGeneratorType } from "framer-motion";
+import { useRef, useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import {
   Send,
   Mail,
@@ -11,7 +11,16 @@ import {
   BrainCircuitIcon,
 } from "lucide-react";
 
-const CONTACT_METHODS = [
+interface ContactMethod {
+  id: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  href: string;
+  description: string;
+}
+
+const CONTACT_METHODS: ContactMethod[] = [
   {
     id: "email",
     icon: <Mail size={24} />,
@@ -54,7 +63,14 @@ const CONTACT_METHODS = [
   },
 ];
 
-const FloatingLabel = ({ children, focused, hasValue, className = "" }) => {
+interface FloatingLabelProps {
+  children: React.ReactNode;
+  focused: boolean;
+  hasValue: boolean;
+  className?: string;
+}
+
+const FloatingLabel: React.FC<FloatingLabelProps> = ({ children, focused, hasValue, className = "" }) => {
   return (
     <motion.label
       className={`absolute left-4 text-gray-400 pointer-events-none transition-all duration-300 ${className}`}
@@ -63,14 +79,23 @@ const FloatingLabel = ({ children, focused, hasValue, className = "" }) => {
         scale: focused || hasValue ? 0.85 : 1,
         color: focused ? "#3b82f6" : "#9ca3af",
       }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      transition={{ type: "spring" as AnimationGeneratorType, stiffness: 300, damping: 25 }}
     >
       {children}
     </motion.label>
   );
 };
 
-const ContactInput = ({
+interface ContactInputProps {
+  type?: string;
+  placeholder: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  multiline?: boolean;
+  rows?: number;
+}
+
+const ContactInput: React.FC<ContactInputProps> = ({
   type = "text",
   placeholder,
   value,
@@ -82,7 +107,7 @@ const ContactInput = ({
   const [hasValue, setHasValue] = useState(false);
 
   useEffect(() => {
-    setHasValue(value && value.length > 0);
+    setHasValue(value.length > 0);
   }, [value]);
 
   const inputClasses = `
@@ -115,31 +140,39 @@ const ContactInput = ({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           className={inputClasses}
+          placeholder={placeholder}
         />
       )}
     </div>
   );
 };
 
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 export default function Contact() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
   const isInView = useInView(ref, { once: true, amount: 0.15 });
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
 
-  const [hoveredMethod, setHoveredMethod] = useState(null);
+  const [hoveredMethod, setHoveredMethod] = useState<string | null>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const x = useSpring(mouseX, { stiffness: 300, damping: 30 });
   const y = useSpring(mouseY, { stiffness: 300, damping: 30 });
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
     const rect = ref.current?.getBoundingClientRect();
     if (rect) {
       mouseX.set((e.clientX - rect.left - rect.width / 2) * 0.1);
@@ -147,14 +180,15 @@ export default function Contact() {
     }
   };
 
-  const handleInputChange = (field) => (e) => {
+  const handleInputChange = (field: keyof FormData) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
       [field]: e.target.value,
     }));
   };
 
-  const containerVariants = {
+  // Fix for Variants type: use correct AnimationGeneratorType for "type" property
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -162,11 +196,12 @@ export default function Contact() {
         duration: 0.8,
         staggerChildren: 0.1,
         delayChildren: 0.2,
+        type: "tween", // change from generic string to valid AnimationGeneratorType
       },
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
@@ -213,7 +248,7 @@ export default function Contact() {
         <div className="w-full h-full bg-gradient-to-tl from-purple-400/20 to-pink-400/20 rounded-full blur-xl" />
       </motion.div>
 
-      {/* Main Content Wrapper - max width and full width layout on wide screens */}
+      {/* Main Content Wrapper */}
       <motion.div
         className="relative z-10 max-w-[1080px] mx-auto flex flex-col gap-16"
         variants={containerVariants}
@@ -221,10 +256,7 @@ export default function Contact() {
         animate={isInView ? "visible" : "hidden"}
       >
         {/* Header */}
-        <motion.header
-          variants={itemVariants}
-          className="text-center max-w-lg mx-auto"
-        >
+        <motion.header variants={itemVariants} className="text-center max-w-lg mx-auto">
           <motion.h1
             className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent"
             whileHover={{ scale: 1.02 }}
@@ -239,22 +271,14 @@ export default function Contact() {
           >
             Something <span className="italic text-blue-400">Beautiful</span>
           </motion.h2>
-          <motion.p
-            className="text-base sm:text-lg text-gray-400 leading-relaxed"
-            variants={itemVariants}
-          >
-            Ready to bring your vision to life? Let's discuss your next project
-            and create something extraordinary together.
+          <motion.p className="text-base sm:text-lg text-gray-400 leading-relaxed" variants={itemVariants}>
+            Ready to bring your vision to life? Let's discuss your next project and create something extraordinary together.
           </motion.p>
         </motion.header>
 
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
           {/* Contact Methods */}
-          <motion.div
-            className="flex-1 space-y-8"
-            variants={itemVariants}
-            aria-label="Contact methods"
-          >
+          <motion.div className="flex-1 space-y-8" variants={itemVariants} aria-label="Contact methods">
             <div className="grid grid-cols-1 gap-6">
               {CONTACT_METHODS.map((method) => (
                 <motion.a
@@ -277,12 +301,8 @@ export default function Contact() {
                       {method.icon}
                     </motion.div>
                     <div className="flex-1 min-w-0 max-w-full">
-                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 truncate leading-tight">
-                        {method.label}
-                      </h3>
-                      <p className="text-blue-300 font-medium text-base break-all truncate">
-                        {method.value}
-                      </p>
+                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 truncate leading-tight">{method.label}</h3>
+                      <p className="text-blue-300 font-medium text-base break-all truncate">{method.value}</p>
                       <p className="text-gray-400 text-sm mt-0.5">{method.description}</p>
                     </div>
                     <motion.div
@@ -297,24 +317,15 @@ export default function Contact() {
             </div>
 
             {/* Additional Info */}
-            <motion.div
-              className="p-6 rounded-3xl backdrop-blur-lg bg-white/5 border border-white/10"
-              variants={itemVariants}
-            >
+            <motion.div className="p-6 rounded-3xl backdrop-blur-lg bg-white/5 border border-white/10" variants={itemVariants}>
               <div className="flex items-center gap-3 mb-4">
                 <MapPin size={22} className="text-blue-400" aria-hidden="true" />
-                <h3 className="text-lg font-semibold text-white select-none">
-                  Location
-                </h3>
+                <h3 className="text-lg font-semibold text-white select-none">Location</h3>
               </div>
-              <p className="text-gray-300 text-base mb-3">
-                Mumbai, Maharashtra, India
-              </p>
+              <p className="text-gray-300 text-base mb-3">Mumbai, Maharashtra, India</p>
               <div className="flex items-center gap-3">
                 <Clock size={22} className="text-blue-400" aria-hidden="true" />
-                <span className="text-gray-300 text-base">
-                  Available for worldwide projects
-                </span>
+                <span className="text-gray-300 text-base">Available for worldwide projects</span>
               </div>
             </motion.div>
           </motion.div>
@@ -333,24 +344,11 @@ export default function Contact() {
                 aria-label="Contact form"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <ContactInput
-                    placeholder="Your Name"
-                    value={formData.name}
-                    onChange={handleInputChange("name")}
-                  />
-                  <ContactInput
-                    type="email"
-                    placeholder="Email Address"
-                    value={formData.email}
-                    onChange={handleInputChange("email")}
-                  />
+                  <ContactInput placeholder="Your Name" value={formData.name} onChange={handleInputChange("name")} />
+                  <ContactInput type="email" placeholder="Email Address" value={formData.email} onChange={handleInputChange("email")} />
                 </div>
 
-                <ContactInput
-                  placeholder="Subject"
-                  value={formData.subject}
-                  onChange={handleInputChange("subject")}
-                />
+                <ContactInput placeholder="Subject" value={formData.subject} onChange={handleInputChange("subject")} />
 
                 <ContactInput
                   placeholder="Your Message"
@@ -384,13 +382,8 @@ export default function Contact() {
         </div>
 
         {/* Footer */}
-        <motion.footer
-          className="text-center mt-20 pt-8 border-t border-white/10"
-          variants={itemVariants}
-        >
-          <p className="text-gray-400 text-sm sm:text-base select-text">
-            © 2025 Chaitanya
-          </p>
+        <motion.footer className="text-center mt-20 pt-8 border-t border-white/10" variants={itemVariants}>
+          <p className="text-gray-400 text-sm sm:text-base select-text">© 2025 Chaitanya</p>
         </motion.footer>
       </motion.div>
     </section>

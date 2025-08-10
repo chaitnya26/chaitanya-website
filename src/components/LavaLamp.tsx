@@ -1,7 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { Canvas, useFrame, useThree, extend } from "@react-three/fiber";
 import { shaderMaterial } from "@react-three/drei";
-import * as THREE from "three";
+
 
 // Custom lava lamp shader material
 const LavaLampMaterial = shaderMaterial(
