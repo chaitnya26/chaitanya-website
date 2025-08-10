@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { extend } from "@react-three/fiber";
 import { shaderMaterial } from "@react-three/drei";
+import * as THREE from 'three';
 
 const GradientTextureMaterial = shaderMaterial(
   {
@@ -115,7 +116,7 @@ function GradientTextureShaderBG() {
   return (
     <mesh scale={[1, 1, 1]}>
       <planeGeometry args={[2, 2]} />
-      {/* @ts-ignore */}
+      {/*@ts-expect-error */}
       <gradientTextureMaterial ref={mat} transparent />
     </mesh>
   );
