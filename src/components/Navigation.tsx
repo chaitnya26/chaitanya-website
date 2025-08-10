@@ -12,9 +12,10 @@ import {
 } from "react-icons/fa";
 import { useRouter, usePathname } from "next/navigation";
 
-//-----------------------------------------------------------
-// NAV TYPES — FIXED!
-//-----------------------------------------------------------
+//----------------------------
+// TYPES
+//----------------------------
+
 type AnchorNav = {
   name: string;
   href: string;
@@ -27,12 +28,12 @@ type MegaNav = {
   type: "mega";
 };
 
-// Union type for navOrder
 type NavOrderItem = AnchorNav | MegaNav;
 
-//-----------------------------------------------------------
+//----------------------------
 // DATA
-//-----------------------------------------------------------
+//----------------------------
+
 const footerSections = {
   services: {
     title: "Services",
@@ -94,9 +95,6 @@ const footerSections = {
   },
 };
 
-//----------------------
-// Correctly type navOrder
-//----------------------
 const navOrder: NavOrderItem[] = [
   { name: "Home", href: "#home", type: "anchor" },
   ...Object.entries(footerSections).map(
@@ -138,9 +136,10 @@ const socials = [
   },
 ];
 
-//-----------------------------------------------------------
+//----------------------------
 // HELPERS
-//-----------------------------------------------------------
+//----------------------------
+
 const smoothScroll = (href: string) => {
   if (!href.startsWith("#")) return;
   const id = href.replace("#", "");
@@ -161,9 +160,10 @@ const Logo = ({ invert }: { invert: boolean }) => (
   </span>
 );
 
-//-----------------------------------------------------------
-// COMPONENTS (NavButton, DesktopMegaMenu, DesktopNav, DesktopSocials, Hamburger, MobileDrawer)
-//-----------------------------------------------------------
+//----------------------------
+// COMPONENTS
+//----------------------------
+
 function NavButton({
   label,
   isOpen,
@@ -428,6 +428,10 @@ function Hamburger({
   );
 }
 
+//----------------------------
+// MOBILE DRAWER (SCROLL FIX)
+//----------------------------
+
 function MobileDrawer({
   isOpen,
   onClose,
@@ -446,20 +450,23 @@ function MobileDrawer({
   const router = useRouter();
   const pathname = usePathname();
 
+  // Important scroll lock, only blocks background!
   useEffect(() => {
     if (isOpen) {
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     } else {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     }
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
   const handleMobileNavClick = (href: string) => {
     if (href.startsWith("#")) {
-      const id = href.replace("#", "");
       if (pathname !== "/") {
         router.push("/" + href);
       } else {
@@ -489,7 +496,10 @@ function MobileDrawer({
           />
           <motion.aside
             className="fixed top-0 right-0 h-full w-80 max-w-[95vw] z-50 overflow-y-auto"
-            style={{ background: "rgba(0, 0, 0, 0.85)" }}
+            style={{
+              background: "rgba(0, 0, 0, 0.85)",
+              WebkitOverflowScrolling: "touch",
+            }}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -606,9 +616,10 @@ function MobileDrawer({
   );
 }
 
-//-----------------------------------------------------------
+//----------------------------
 // MAIN NAVIGATION COMPONENT
-//-----------------------------------------------------------
+//----------------------------
+
 export default function Navigation() {
   const [invert, setInvert] = useState(false);
   const [active, setActive] = useState("home");
