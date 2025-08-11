@@ -107,16 +107,13 @@ const projects: Project[] = [
 // -------- Hero Section ---------
 const ProjectsHero: React.FC = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { amount: 0.3 }); // ✅ replaced threshold with amount
+  const inView = useInView(ref, { amount: 0 }); // ✅ replaced threshold with amount
 
   return (
     <section className="w-full py-16 md:py-24 bg-white">
       <motion.div
         ref={ref}
         className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 text-center"
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
       >
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full text-blue-700 text-xs sm:text-sm font-medium mb-6 sm:mb-8">
           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -170,7 +167,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { margin: "-50px" });
+  const inView = useInView(ref, { margin: "0px" });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -187,10 +184,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     <motion.article
       ref={ref}
       className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 group"
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -4 }}
     >
       {/* Header */}
       <div className="flex justify-between items-start mb-4 sm:mb-6">
@@ -294,9 +287,6 @@ export default function Projects() {
           {/* Call to Action */}
           <motion.div
             className="text-center mt-16 sm:mt-20 p-8 sm:p-12 bg-white border border-gray-200 rounded-2xl"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
           >
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
               Interested in My Work?

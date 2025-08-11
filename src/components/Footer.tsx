@@ -113,28 +113,9 @@ const Footer = () => {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.1
-      }
-    }
-  };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: easeOut
-      }
-    }
-  };
+
+  
 
   return (
     <footer
@@ -164,20 +145,17 @@ const Footer = () => {
         ))}
       </div>
 
-      <motion.div
+      <div
         className="relative z-10 max-w-7xl mx-auto px-6 py-20"
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+        
       >
-        <motion.div variants={itemVariants} className="text-center mb-20">
+        <div  className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl font-bold mb-8 py-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
             Let's Build Something Amazing
           </h2>
-          <motion.div
+          <div
             className="max-w-md mx-auto mb-12"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+        
           >
             <form onSubmit={handleNewsletterSubmit} className="relative">
               <div className="relative">
@@ -207,7 +185,7 @@ const Footer = () => {
                 </motion.p>
               )}
             </form>
-          </motion.div>
+          </div>
 
           <div className="flex items-center justify-center gap-8 text-sm text-gray-400 mb-16">
             <div className="flex items-center gap-2">
@@ -223,19 +201,19 @@ const Footer = () => {
               <span>Classified</span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <motion.div
-          variants={itemVariants}
+         
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16"
         >
           <div className="lg:col-span-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="font-display text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-6"
+            <div
+              
+              className="font-display text-2xl font-bold bg-gradient-to-r text-white mb-6"
             >
               Chaitanya
-            </motion.div>
+            </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Passionate engineer. <br />
               Specializing in AI/ML, aerospace innovation, and sustainable technology solutions.
@@ -265,26 +243,24 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-3 bg-white/10 border border-white/20 rounded-xl backdrop-blur-lg hover:bg-white/20 transition-all ${social.color}`}
-                  whileHover={{ scale: 1.1, y: -3 }}
-                  whileTap={{ scale: 0.95 }}
+                  className={`p-3 bg-black border border-white/20 rounded-xl backdrop-blur-lg hover:bg-white active:bg-white transition-all ${social.color}`}
                   aria-label={`Visit ${social.name}`}
                 >
-                  <social.icon size={20} />
+                  <social.icon  />
                 </motion.a>
               ))}
             </div>
           </div>
 
           {Object.entries(footerSections).map(([key, section]) => (
-            <motion.div key={key} variants={itemVariants}>
+            <div key={key} >
               <h3 className="text-lg font-semibold mb-4 text-white">{section.title}</h3>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="text-gray-300 hover:text-blue-400 transition-colors text-sm group flex items-center gap-2"
+                      className="text-gray-300 hover:text-blue-600 hover:bg-gray-300 rounded-2xl px-2 py-2 transition-colors text-sm group flex items-center gap-2"
                     >
                       {link.name}
                       <ExternalLink
@@ -296,11 +272,11 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
         </motion.div>
 
-        <motion.div variants={itemVariants} className="mb-16">
+        <motion.div  className="mb-16">
           <h3 className="text-2xl font-bold text-center mb-8">What Clients Say</h3>
           <div className="grid md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
@@ -326,7 +302,7 @@ const Footer = () => {
         </motion.div>
 
         <motion.div
-          variants={itemVariants}
+          
           className="text-center mb-16 p-12 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10 rounded-3xl backdrop-blur-lg"
         >
           <h3 className="text-3xl font-bold mb-4">Ready to Start Your Project?</h3>
@@ -356,7 +332,7 @@ const Footer = () => {
         </motion.div>
 
         <motion.div
-          variants={itemVariants}
+         
           className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6"
         >
           <div className="text-center md:text-left">
@@ -383,7 +359,7 @@ const Footer = () => {
             </a>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </footer>
   );
 };

@@ -140,7 +140,7 @@ const TechItem = memo(({ name }: { name: string }) => {
   if (slug === 'none' || imgFailed || !slug) {
     return (
       <li
-        className="flex flex-row items-center gap-3 sm:gap-8 px-4 py-3 sm:px-8 sm:py-6 rounded-2xl justify-center select-none cursor-default hover:shadow-lg hover:scale-105 transition bg-transparent"
+        className="flex flex-row items-center px-4 py-3 sm:px-8 sm:py-3 rounded-2xl bg-transparent select-none cursor-default"
         title={name}
         role="listitem"
       >
@@ -148,29 +148,30 @@ const TechItem = memo(({ name }: { name: string }) => {
           src="/generic.svg"
           alt="Generic logo fallback"
           draggable={false}
-          className="h-8 w-8 sm:h-24 sm:w-24 object-contain opacity-100"
+          className="h-16 w-16 duration-300"
+          onError={handleImgError}
           loading="lazy"
         />
-        <span className="font-sans font-bold text-lg sm:text-6xl text-black ">{name}</span>
+        <span className="font-body font-bold text-lg sm:text-6xl text-black ">{name}</span>
       </li>
     );
   }
 
   return (
     <li
-      className="flex flex-row items-center px-4 py-3 sm:px-8 sm:py-6 rounded-2xl bg-transparent select-none cursor-default hover:shadow-lg hover:scale-105 transition"
+      className="flex flex-row items-center px-4 py-3 sm:px-8 sm:py-3 rounded-2xl bg-transparent select-none cursor-default"
       title={name}
       role="listitem"
     >
       <img
         src={imgSrc}
         alt={name}
-        className="h-8 w-8 sm:h-24 sm:w-24 object-contain drop-shadow-md transition-transform duration-300 hover:scale-110"
+        className="h-16 w-16 duration-300"
         onError={handleImgError}
         draggable={false}
         loading="lazy"
       />
-      <span className="font-sans font-bold text-lg sm:text-6xl text-black ">{name}</span>
+      <span className=" font-body font-bold text-lg sm:text-6xl text-black px-6  ">{name}</span>
     </li>
   );
 });
@@ -190,19 +191,16 @@ const FullWidthScroller = ({
       className="w-full max-w-screen overflow-hidden relative left-1/2 -ml-[50vw] -mr-[50vw]"
       aria-label="Scrolling list of technology logos"
       tabIndex={0}
-      onMouseEnter={() => setPaused(true)}
+      onMouseEnter={() => setPaused(false)}
       onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
+      onFocus={() => setPaused(false)}
       onBlur={() => setPaused(false)}
     >
       <div
         className={`inline-flex flex-nowrap min-w-[200vw] ${
           direction === 'left' ? 'animate-scroll-left' : 'animate-scroll-right'
         }`}
-        style={{
-          animationPlayState: paused ? 'paused' : 'running',
-          willChange: 'transform',
-        }}
+       
       >
         <ul className="flex items-center justify-center w-max space-x-6 sm:space-x-12" role="list">
           {items.map((name) => (
@@ -224,15 +222,15 @@ export default function TechStack() {
   return (
     <section
       id="skills"
-      className="relative w-screen py-16 sm:py-32 flex flex-col justify-center overflow-visible bg-white/40"
+      className="relative w-screen py-16 sm:py-32 flex flex-col justify-center overflow-visible bg-white/40 select-none"
       aria-label="Technology Stack"
       style={{
         top: '-1px',
         minHeight: '60vh', // enough vertical room
       }}
     >
-      <div className="w-full space-y-12 sm:space-y-20 px-4 sm:px-12">
-        <h2 className="text-center font-sans text-3xl sm:text-4xl font-bold uppercase tracking-widest text-black select-none">
+      <div className="w-full ">
+        <h2 className="text-center font-body text-massive sm:text-4xl uppercase tracking-widest select-none">
           TACTICAL ARSENAL
         </h2>
         <div className="space-y-8 sm:space-y-12 py-8 sm:py-16" role="list">

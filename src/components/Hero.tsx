@@ -18,14 +18,7 @@ const Hero = () => {
   const glowParallaxX = useTransform(mouseX, [-0.5, 0.5], [-30, 30]);
   const glowParallaxY = useTransform(mouseY, [-0.5, 0.5], [-30, 30]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY, currentTarget } = e;
-    const { width, height, left, top } = currentTarget.getBoundingClientRect();
-    const x = (clientX - left) / width - 0.5;
-    const y = (clientY - top) / height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
+  
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -61,19 +54,11 @@ const Hero = () => {
     <section
       ref={heroRef}
       id="home"
-      onMouseMove={handleMouseMove}
+      
       className="h-screen w-full flex justify-center items-center relative overflow-hidden px-4 sm:px-6 md:px-12"
     >
-      {/* Background glow layers */}
       <VideoBackground />
-      <motion.div
-        aria-hidden="true"
-        className="absolute inset-0 z-10 pointer-events-none"
-        style={{ x: glowParallaxX, y: glowParallaxY }}
-      >
-        <div className="absolute top-[20%] left-[15%] w-48 h-48 sm:w-96 sm:h-96 bg-electric/20 rounded-full filter blur-3xl opacity-80" />
-        <div className="absolute bottom-[20%] right-[15%] w-48 h-48 sm:w-96 sm:h-96 bg-purple/20 rounded-full filter blur-3xl opacity-80" />
-      </motion.div>
+      
 
       {/* Foreground content */}
       <motion.div
@@ -106,7 +91,7 @@ const Hero = () => {
             <Button
               size="lg"
               onClick={scrollToProjects}
-              className="w-full sm:w-auto px-6 py-5 text-base font-bold uppercase tracking-wider rounded-lg shadow-soft text-primary-foreground hover:shadow-glow transition-all duration-300"
+              className="w-full sm:w-auto px-6 py-5 text-base font-bold uppercase tracking-wider rounded-lg shadow-soft text-primary-foreground hover:shadow-glow hover:cursor-pointer transition-all duration-300"
               style={{ background: 'var(--gradient-primary)' }}
             >
               View Missions
@@ -119,7 +104,7 @@ const Hero = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto px-6 py-5 text-base font-bold uppercase tracking-wider rounded-lg border-2 border-border bg-background/30 backdrop-blur-sm hover:bg-foreground hover:text-background transition-colors"
+                className="w-full sm:w-auto px-6 py-5 text-base font-bold uppercase tracking-wider rounded-lg border-2 border-border bg-background/30 backdrop-blur-sm hover:bg-foreground hover:text-black hover:cursor-pointer hover:bg-white transition-colors"
               >
                 Resume
                 <FileText className="ml-2 h-4 w-4" />
