@@ -35,28 +35,7 @@ const Engineering = () => {
       );
     }
 
-    // Services section stagger fade-up animation
-    const serviceItems = servicesRef.current?.querySelectorAll(".service-item");
-    if (serviceItems && serviceItems.length > 0 && servicesRef.current) {
-      ScrollTrigger.create({
-        trigger: servicesRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        animation: gsap.fromTo(
-          serviceItems,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power2.out",
-            stagger: { amount: 1.2, grid: [2, 3], from: "start" },
-          }
-        ),
-        toggleActions: "play none none reverse",
-      });
-    }
-
+    
     // Technology stack animation: rotateY and scale in with stagger
     const techItems = techRef.current?.querySelectorAll(".tech-item");
     if (techItems && techItems.length > 0 && techRef.current) {
@@ -309,7 +288,6 @@ class RequirementsManager {
               <motion.div
                 key={index}
                 className="service-item bg-white border-2 border-gray-100 rounded-2xl p-6 sm:p-8 hover:border-blue-500 transition-shadow duration-300 hover:shadow-xl"
-                whileHover={{ scale: 1.02 }}
               >
                 <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 mb-6">
                   <div className="text-4xl sm:text-5xl select-none">{service.icon}</div>

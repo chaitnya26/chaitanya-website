@@ -8,7 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navigation from "../../../components/Navigation";
 import Footer from "../../../components/Footer";
 
-
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,30 +40,7 @@ const WebDevelopment = () => {
     );
 
     // Services section stagger animation
-    ScrollTrigger.create({
-      trigger: servicesRef.current,
-      start: "top 80%",
-      end: "bottom 20%",
-      animation: gsap.fromTo(
-        ".service-item",
-        {
-          y: 60,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-          stagger: {
-            amount: 1.2,
-            grid: [2, 3],
-            from: "start",
-          },
-        }
-      ),
-      toggleActions: "play none none reverse",
-    });
+  
 
     // Tech stack animation
     ScrollTrigger.create({
@@ -328,11 +304,10 @@ const optimizeImages = async (images) => {
 
  return (
   <> 
-  <section className="bg-white text-black min-h-screen">
+  <section className="bg-black text-white min-h-screen">
     <nav className="py-12">
       <Navigation />
     </nav>
- 
     {/* Hero Section */}
     <section
       ref={heroRef}
@@ -350,12 +325,12 @@ const optimizeImages = async (images) => {
             <div className="word">I</div>
             <div className="word">CODE.</div> <br />
             <div className="word">I</div>
-            <div className="word text-blue-600">DELIVER.</div>
+            <div className="word text-blue-500">DELIVER.</div>
           </h1>
         </div>
 
         <div className="max-w-xl mb-12">
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-gray-700">
+          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-white">
             Professional web development services that transform your vision into powerful, scalable digital solutions. From concept to deployment, we craft exceptional web experiences.
           </p>
         </div>
@@ -393,9 +368,9 @@ const optimizeImages = async (images) => {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-black rounded-full flex justify-center"
+          className="w-6 h-10 border-2 border-white rounded-full flex justify-center"
         >
-          <div className="w-1 h-3 bg-black rounded-full mt-2"></div>
+          <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
         </motion.div>
       </div>
     </section>
@@ -407,7 +382,7 @@ const optimizeImages = async (images) => {
     >
       <div className="text-center mb-12 sm:mb-16">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">My Services</h2>
-        <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto">
+        <p className="text-base sm:text-lg text-white max-w-xl mx-auto">
           Comprehensive web development solutions tailored to your business needs
         </p>
       </div>
@@ -416,12 +391,11 @@ const optimizeImages = async (images) => {
         {services.map((service, index) => (
           <motion.div
             key={index}
-            className="service-item bg-white border-2 border-gray-100 rounded-2xl p-6 sm:p-8 hover:border-blue-500 transition-all duration-300 hover:shadow-xl"
-            whileHover={{ scale: 1.02 }}
+            className="service-item bg-black rounded-2xl p-6 sm:p-8 hover:border-blue-500 transition-all duration-100 hover:shadow-xl hover:cursor-pointer"
           >
             <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{service.icon}</div>
             <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{service.title}</h3>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">{service.description}</p>
+            <p className="text-blue-300 mb-4 sm:mb-6 text-sm sm:text-base">{service.description}</p>
 
             <div className="mb-4">
               <div className="flex flex-wrap gap-2 mb-3">
@@ -462,7 +436,7 @@ const optimizeImages = async (images) => {
     {/* Technology Stack Section */}
     <section
       ref={techRef}
-      className="min-h-screen bg-gray-50 px-4 sm:px-8 md:px-16 lg:px-24 py-16 sm:py-24"
+      className="min-h-screen bg-black px-4 sm:px-8 md:px-16 lg:px-24 py-16 sm:py-24"
     >
       <div className="text-center mb-12 sm:mb-16">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">Technology Stack</h2>
@@ -475,7 +449,7 @@ const optimizeImages = async (images) => {
         {technologies.map((tech, index) => (
           <div
             key={index}
-            className="tech-item bg-white rounded-2xl p-6 sm:p-8 text-center hover:shadow-lg transition-shadow"
+            className="tech-item bg-black rounded-2xl p-6 sm:p-8 text-center hover:shadow-lg transition-shadow"
           >
             <div className="mb-3 sm:mb-4">
               <div
@@ -547,7 +521,7 @@ const optimizeImages = async (images) => {
     >
       <div className="text-center mb-12 sm:mb-16">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">The Process</h2>
-        <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto">
+        <p className="text-base sm:text-lg text-blue-400 max-w-xl mx-auto">
           A proven methodology that ensures successful project delivery
         </p>
       </div>
@@ -567,7 +541,7 @@ const optimizeImages = async (images) => {
                 index % 2 === 0 ? "md:pr-8" : "md:pl-8"
               }`}
             >
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-blue-500 transition-colors relative z-10">
+              <div className="bg-black border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-blue-500 transition-colors relative z-10">
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg sm:text-xl mr-3 sm:mr-4">
                     {step.step}

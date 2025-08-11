@@ -87,7 +87,7 @@ const Hero = () => {
         </p>
 
         <div className="hero-cta-group mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-xs sm:max-w-none">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+          <motion.div whileHover={{ scale: 1.05,}} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
             <Button
               size="lg"
               onClick={scrollToProjects}
@@ -111,17 +111,22 @@ const Hero = () => {
               </Button>
             </a>
           </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+            <a href="/contact" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto block">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto px-6 py-5 text-base font-bold uppercase tracking-wider rounded-lg border-2 border-border bg-background/30 backdrop-blur-sm hover:bg-foreground hover:text-black hover:cursor-pointer hover:bg-white transition-colors"
+              >
+                Contact me
+                <FileText className="ml-2 h-4 w-4" />
+              </Button>
+            </a>
+          </motion.div>
         </div>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 1 }}
-        className="absolute bottom-8 left-6 md:left-12 text-xs md:text-sm text-muted-foreground uppercase tracking-[0.2em] z-30 select-none"
-      >
-        Commander of Intelligence
-      </motion.div>
+    
     </section>
   );
 };

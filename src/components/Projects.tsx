@@ -297,7 +297,7 @@ export default function Projects() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
               <a
-                href="mailto:changxao@protonmail.com"
+                href="/contact"
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
               >
                 Get In Touch

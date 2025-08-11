@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import {
   FaLinkedin,
   FaGithub,
@@ -76,7 +76,7 @@ const footerSections = {
       { name: "Work With Me", href: "/collaborate" },
       { name: "Speaking", href: "/speaking" },
       { name: "Press Kit", href: "/press" },
-      { name: "Contact", href: "#contact" },
+      { name: "Contact", href: "/contact" },
     ],
   },
   legal: {
@@ -105,7 +105,7 @@ const navOrder: NavOrderItem[] = [
         type: "mega",
       } as MegaNav)
   ),
-  { name: "Contact", href: "#contact", type: "anchor" },
+  { name: "Contact", href: "/contact", type: "anchor" },
   { name: "Blog", href: "/blog", type: "anchor" },
 ];
 
@@ -432,50 +432,54 @@ function Hamburger({
 // MOBILE DRAWER (SCROLL FIX)
 //----------------------------
 
-function MobileDrawer({
+
+
+// Framer Motion variants for swipe gestures
+const drawerVariants: Variants = {
+  open: {
+    x: 0,
+    transition: {
+      type: "spring" as const, // Force string literal
+      stiffness: 530,
+      damping: 38,
+    },
+  },
+  closed: {
+    x: "100%",
+    transition: { duration: 0.3 },
+  },
+};
+
+ function MobileDrawer({
   isOpen,
   onClose,
   active,
-  invert = false,
+  invert = false
 }: {
   isOpen: boolean;
   onClose: () => void;
   active: string;
   invert?: boolean;
 }) {
-  const [expanded, setExpanded] = useState<keyof typeof footerSections | null>(
-    null
-  );
-
+  const [expanded, setExpanded] = useState<keyof typeof footerSections | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
-  // Important scroll lock, only blocks background!
+  // Scroll lock
   useEffect(() => {
-    if (isOpen) {
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    }
+    document.documentElement.style.overflow = isOpen ? "hidden" : "";
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [isOpen]);
 
+  // Navigation handler
   const handleMobileNavClick = (href: string) => {
     if (href.startsWith("#")) {
-      if (pathname !== "/") {
-        router.push("/" + href);
-      } else {
-        smoothScroll(href);
-      }
-    } else if (href === "/") {
-      if (pathname !== "/") {
-        router.push("/");
-      }
+      if (pathname !== "/") router.push("/" + href);
+      else smoothScroll(href);
     } else {
       router.push(href);
     }
@@ -488,127 +492,138 @@ function MobileDrawer({
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/70 backdrop-blur-lg z-40"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
+
+          {/* Drawer */}
           <motion.aside
-            className="fixed top-0 right-0 h-full w-80 max-w-[95vw] z-50 overflow-y-auto"
+            className="fixed top-0 right-0 h-full w-80 max-w-[90vw] z-50 overflow-y-auto flex flex-col"
             style={{
-              background: "rgba(0, 0, 0, 0.85)",
-              WebkitOverflowScrolling: "touch",
+              background: "rgba(0, 0, 0, 0.92)",
+              WebkitOverflowScrolling: "touch"
             }}
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 530, damping: 38 }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={drawerVariants}
+            drag="x"
+            dragDirectionLock
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(e, { offset }) => {
+              if (offset.x > 50) { // swipe right to close
+                onClose();
+              }
+            }}
             aria-modal="true"
             role="dialog"
           >
-            <div className="p-6 text-white">
-              <div className="flex justify-between items-center mb-8">
-                <Logo invert={true} />
-                <button
-                  onClick={onClose}
-                  className="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  aria-label="Close menu"
-                >
-                  <FaTimes className="w-5 h-5" />
-                </button>
-              </div>
-              <nav className="space-y-3">
-                {navOrder.map((item) =>
-                  item.type === "mega" ? (
-                    <div key={item.key}>
-                      <button
-                        className={`w-full flex justify-between items-center py-4 px-5 rounded-xl font-semibold text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          expanded === item.key
-                            ? "bg-blue-600 text-white"
-                            : "text-white hover:bg-blue-700 hover:text-white"
-                        }`}
-                        onClick={() =>
-                          setExpanded(expanded === item.key ? null : item.key)
-                        }
-                        aria-expanded={expanded === item.key}
-                        aria-controls={`mobile-submenu-${item.key}`}
-                      >
-                        {item.name}
-                        <motion.div
-                          aria-hidden="true"
-                          animate={{ rotate: expanded === item.key ? 180 : 0 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <FaChevronDown className="w-5 h-5" />
-                        </motion.div>
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {expanded === item.key && (
-                          <motion.div
-                            id={`mobile-submenu-${item.key}`}
-                            className="pl-6 overflow-hidden"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                          >
-                            <div className="space-y-2 mt-2">
-                              {footerSections[
-                                item.key as keyof typeof footerSections
-                              ].links.map((link) => (
-                                <a
-                                  key={link.name}
-                                  href={link.href}
-                                  className="block py-3 px-4 rounded-lg text-white hover:bg-blue-700 hover:text-white font-medium transition-colors"
-                                  tabIndex={0}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleMobileNavClick(link.href);
-                                  }}
-                                >
-                                  {link.name}
-                                </a>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={`block py-4 px-5 rounded-xl font-semibold text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        active === item.href.replace("#", "").toLowerCase()
-                          ? "bg-blue-600 text-white"
-                          : "text-white hover:bg-blue-700 hover:text-white"
-                      }`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleMobileNavClick(item.href);
-                      }}
-                    >
-                      {item.name}
-                    </a>
-                  )
-                )}
-              </nav>
-              <div className="flex gap-4 mt-10 justify-center pt-6 border-t border-gray-700">
+            {/* Header */}
+            <div className="p-4 flex justify-between items-center border-b border-white/10">
+              {/* Social Icons at top */}
+              <div className="flex gap-3">
                 {socials.map((s) => (
                   <a
                     key={s.label}
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 rounded-full text-white hover:text-blue-600 hover:bg-blue-900 transition-colors"
+                    className="p-2 rounded-full text-white hover:text-blue-500 hover:bg-blue-900 transition-colors"
                     aria-label={s.label}
                   >
-                    <s.icon className="w-6 h-6" />
+                    <s.icon className="w-5 h-5" />
                   </a>
                 ))}
               </div>
+
+              {/* Close Button */}
+              <button
+                onClick={onClose}
+                className="p-2 rounded-full text-white hover:bg-white/20 "
+                aria-label="Close menu"
+              >
+                <FaTimes className="w-5 h-5" />
+              </button>
             </div>
+
+            {/* Navigation */}
+            <nav className="p-6 space-y-3 flex-1">
+              {navOrder.map((item) =>
+                item.type === "mega" ? (
+                  <div key={item.key}>
+                    <button
+                      className={`w-full flex justify-between items-center py-4 px-5 rounded-xl font-semibold text-lg transition-colors ${
+                        expanded === item.key
+                          ? "bg-blue-600 text-white"
+                          : "text-white hover:bg-blue-700"
+                      }`}
+                      onClick={() =>
+                        setExpanded(expanded === item.key ? null : item.key)
+                      }
+                      aria-expanded={expanded === item.key}
+                    >
+                      {item.name}
+                      <motion.div
+                        animate={{ rotate: expanded === item.key ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <FaChevronDown className="w-5 h-5" />
+                      </motion.div>
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {expanded === item.key && (
+                        <motion.div
+                          className="pl-6 overflow-hidden"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                        >
+                          <div className="space-y-2 mt-2">
+                            {footerSections[
+                              item.key as keyof typeof footerSections
+                            ].links.map((link) => (
+                              <a
+                                key={link.name}
+                                href={link.href}
+                                className="block py-3 px-4 rounded-lg text-white hover:bg-blue-700 transition-colors"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleMobileNavClick(link.href);
+                                }}
+                              >
+                                {link.name}
+                              </a>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className={`block py-4 px-5 rounded-xl font-semibold text-lg transition-colors ${
+                      active === item.href.replace("#", "").toLowerCase()
+                        ? "bg-blue-600 text-white"
+                        : "text-white hover:bg-blue-700"
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleMobileNavClick(item.href);
+                    }}
+                  >
+                    {item.name}
+                  </a>
+                )
+              )}
+            </nav>
           </motion.aside>
         </>
       )}

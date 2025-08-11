@@ -7,13 +7,12 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Navigation from "../../../components/Navigation";
 import Footer from "../../../components/Footer";
+import Sunset from "@/components/Sunset";
 
-import dynamic from "next/dynamic";
+
 // Register GSAP plugin
 gsap.registerPlugin(ScrollTrigger);
-const SmoothGR = dynamic(() => import("../../../components/SmoothGR"), {
-  ssr: false,
-});
+
 
 const MobileApps = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -37,26 +36,7 @@ const MobileApps = () => {
       );
     }
 
-    // Animate tech skills with scroll stagger
-    const techSkills = techRef.current?.querySelectorAll(".tech-skill");
-    if (techSkills && techSkills.length > 0 && techRef.current) {
-      ScrollTrigger.create({
-        trigger: techRef.current,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-        animation: gsap.fromTo(
-          techSkills,
-          { y: 50, opacity: 0, scale: 0.8 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            stagger: { amount: 1.2, from: "start" },
-          }
-        ),
-      });
-    }
+  
 
     // Process timeline animation: height grow on scroll
     const processLine = processRef.current?.querySelector(".process-line");
@@ -125,23 +105,16 @@ export default function App() {
       step: 4,
       title: "Launch & Support",
       description: "App store deployment, analytics setup, user onboarding, and ongoing support & updates.",
-      duration: "Ongoing",
+      duration: "8-12 weeks",
     },
   ];
 
   return (
     <div className="text-black min-h-screen font-body">
       <Navigation />
-      <SmoothGR />
+ <Sunset />
       {/* Hero Section */}
-      <video
-        autoPlay
-        loop
-        muted
-        className="absolute top-0 left-0 w-full h-full object-cover"
-      >
-        <source src="/E.mp4" type="video/mp4" />
-      </video>
+   
       <section
         ref={heroRef}
         className="relative min-h-screen flex flex-col justify-center items-center px-8 py-16 text-center z-0"
@@ -153,13 +126,13 @@ export default function App() {
           className="max-w-5xl"
         >
           <h1 className="flex flex-wrap justify-center text-5xl md:text-8xl font-extrabold leading-tight mb-8 drop-shadow-xl">
-            <span className="m-2 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent word">
+            <span className="m-2 text-white word">
               Mobile
             </span>
-            <span className="m-2 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent word">
+            <span className="m-2  text-blue-700 word">
               App
             </span>
-            <span className="m-2 bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 bg-clip-text text-transparent word">
+            <span className="m-2  text-orange-200 word">
               Development
             </span>
           </h1>
@@ -172,15 +145,15 @@ export default function App() {
           <div className="mt-10 flex flex-wrap gap-4 justify-center">
             <motion.a
               whileHover={{ scale: 1.05 }}
-              href="#services"
-              className="px-8 py-4 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-full font-bold text-lg shadow-lg"
+              href="/contact"
+              className="px-4 py-4 rounded-2xl font-bold text-white text-lg shadow-lg hover:bg-white hover:text-black transition-colors backdrop-blur-2xl"
             >
               Get Started
             </motion.a>
             <motion.a
               whileHover={{ scale: 1.05 }}
               href="#portfolio"
-              className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-full font-bold text-lg hover:bg-white/20"
+              className="px-4 py-4 rounded-2xl font-bold text-white text-lg shadow-lg hover:bg-white hover:text-black transition-colors backdrop-blur-2xl"
             >
               View Portfolio
             </motion.a>
@@ -189,7 +162,7 @@ export default function App() {
       </section>
 
       {/* Service Overview */}
-      <section className="px-8 md:px-20 py-20 border-t  mx-auto">
+      <section className="px-8 md:px-20 py-20 b  mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-black mb-6  text-white">Mobile App Expertise</h2>
           <p className="text-xl text-white max-w-3xl mx-auto">
@@ -203,7 +176,7 @@ export default function App() {
           {technologies.map((tech, i) => (
             <motion.div
               key={i}
-              className="tech-skill bg-white/10 rounded-2xl p-6 shadow hover:shadow-xl transition-transform text-white"
+              className="tech-skill backdrop-blur-3xl rounded-2xl p-6 shadow hover:shadow-xl transition-transform text-white"
             >
               <div
                 className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-white text-xl font-bold mb-4"
@@ -245,7 +218,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 text-white">Mobile App Workflow</h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-4xl mx-auto">
+            <p className="text-base sm:text-lg text-orange-200 max-w-4xl mx-auto">
               A systematic approach ensuring quality, reliability, and innovation at every stage
             </p>
           </div>
@@ -260,19 +233,19 @@ export default function App() {
                 }`}
               >
                 <div className={`w-full md:w-1/2 px-0 md:px-8`}>
-                  <div className="bg-white border-2 border-gray-200 rounded-2xl py-6 sm:p-8 hover:border-blue-500 transition-colors shadow-lg relative z-10 text-black">
+                  <div className=" backdrop-blur-3xl rounded-2xl py-6 sm:p-8 hover:border-blue-500 transition-colors shadow-lg relative z-10 text-white">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 sm:w-16 sm:h-16  text-white bg-blue-600 rounded-full flex items-center justify-center font-bold text-xl sm:text-2xl mr-4 sm:mr-6">
                         {step.step}
                       </div>
                       <div>
                         <h3 className="text-xl sm:text-2xl font-bold">{step.title}</h3>
-                        <span className="font-medium text-black">{step.duration}</span>
+                        <span className="font-medium text-white">{step.duration}</span>
                       </div>
                     </div>
-                    <p className="text-gray-600 leading-relaxed mb-4 sm:mb-6">{step.description}</p>
+                    <p className="text-blue-100 leading-relaxed mb-4 sm:mb-6">{step.description}</p>
                     <div>
-                      <h4 className="font-bold mb-2 text-gray-800">Key Deliverables:</h4>
+                      <h4 className="font-bold mb-2 text-orange-200">Key Deliverables:</h4>
                       {/* Add deliverables here if needed */}
                     </div>
                   </div>
